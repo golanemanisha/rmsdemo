@@ -1,0 +1,7 @@
+<h1>RMS</h1>
+<%= form_for @conn, Routes.order_book_path(@conn, :selected_stock), [method: :post], fn f -> %>
+  <%= select f, :stk_name, Enum.map(@list, &(&1.stk_name)) %> <%= @ltp%>
+    
+    <%= label f,:"Select stock to check price" %>
+    <input type="submit"/>
+<% end %>

@@ -32,3 +32,6 @@ rmsdemo-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Mnesia logs
+.mnesia/*
+

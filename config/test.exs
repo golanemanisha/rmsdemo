@@ -8,8 +8,7 @@ config :rmsdemo, RmsdemoWeb.Endpoint,
   server: false
 
 # In test we don't send emails.
-config :rmsdemo, Rmsdemo.Mailer,
-  adapter: Swoosh.Adapters.Test
+config :rmsdemo, Rmsdemo.Mailer, adapter: Swoosh.Adapters.Test
 
 # Print only warnings and errors during test
 config :logger, level: :warn

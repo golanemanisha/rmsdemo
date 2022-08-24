@@ -6,14 +6,15 @@ defmodule RmsdemoWeb.ExecuteOrderLive do
   def mount(_params, _session, socket) do
     socket =
       assign(socket,
-      list: StocksName.all_stocks(),
-      stk_name: "INFY",
-      ltp: StocksName.selected_stock("INFY") || 0,
-      order_book: OrderBook.list_all(),
-      quantity: "",
-      flag: false,
-      status: OrderBook.return_status(1)
+        list: StocksName.all_stocks(),
+        stk_name: "INFY",
+        ltp: StocksName.selected_stock("INFY") || 0,
+        order_book: OrderBook.list_all(),
+        quantity: "",
+        flag: false,
+        status: OrderBook.return_status(1)
       )
+
     {:ok, socket}
   end
 
@@ -63,60 +64,65 @@ defmodule RmsdemoWeb.ExecuteOrderLive do
     """
   end
 
-  def handle_event("filter", %{"stk_name" => stk_name,}, socket) do
-    ltp =  StocksName.selected_stock(stk_name)
+  def handle_event("filter", %{"stk_name" => stk_name}, socket) do
+    ltp = StocksName.selected_stock(stk_name)
     params = [ltp: ltp, stk_name: stk_name]
-    socket = assign(socket,params)
+    socket = assign(socket, params)
     {:noreply, socket}
   end
 
-  def handle_event("update-price",  %{"price" => price}, socket) do
+  def handle_event("update-price", %{"price" => price}, socket) do
     params = [price: price]
-    socket = assign(socket,params)
+    socket = assign(socket, params)
     {:noreply, socket}
   end
-  def handle_event("update-quantity",  %{"quantity" => quantity}, socket) do
+
+  def handle_event("update-quantity", %{"quantity" => quantity}, socket) do
     params = [quantity: quantity]
-    socket = assign(socket,params)
+    socket = assign(socket, params)
     {:noreply, socket}
   end
-  def handle_event("update-placed_by",  %{ "placed_by" => placed_by}, socket) do
+
+  def handle_event("update-placed_by", %{"placed_by" => placed_by}, socket) do
     params = [placed_by: placed_by]
-    socket = assign(socket,params)
+    socket = assign(socket, params)
     {:noreply, socket}
   end
 
-  def handle_event("buy",  _, socket) do
-      IO.inspect("buy called")
-      # IO.inspect("socket==>",socket)
-      new_stk_name = socket.assigns.stk_name
-      # new_price = socket.assigns.price
-      new_quantity = socket.assigns.quantity
-      # new_placed_by = socket.assigns.placed_by
-      new_ltp = socket.assigns.ltp
-      # order_book = socket.assigns.order_book
-      ordr_id = for x <- socket.assigns.order_book do
-                      x.order_id
-                end
-      IO.inspect(hd(ordr_id))
-      params = %{
-                  stk_name: new_stk_name,
-                  quantity: new_quantity,
-                  ltp: new_ltp,
-                  order_id: hd(ordr_id)
-                }
-      # IO.inspect(new_stk_name)
-      # IO.inspect(new_price)
-      # IO.inspect(new_quantity)
-      # IO.inspect(new_placed_by)
-      # IO.inspect(new_ltp)
+  def handle_event("buy", _, socket) do
+    IO.inspect("buy called")
+    # IO.inspect("socket==>",socket)
+    new_stk_name = socket.assigns.stk_name
+    # new_price = socket.assigns.price
+    new_quantity = socket.assigns.quantity
+    # new_placed_by = socket.assigns.placed_by
+    new_ltp = socket.assigns.ltp
+    # order_book = socket.assigns.order_book
+    ordr_id =
+      for x <- socket.assigns.order_book do
+        x.order_id
+      end
 
-      OrderBook.store_order(params)
-      # param = [flag: flag]
-      # socket = assign(socket,param)
-      {:noreply, socket}
-    end
+    IO.inspect(hd(ordr_id))
 
+    params = %{
+      stk_name: new_stk_name,
+      quantity: new_quantity,
+      ltp: new_ltp,
+      order_id: hd(ordr_id)
+    }
+
+    # IO.inspect(new_stk_name)
+    # IO.inspect(new_price)
+    # IO.inspect(new_quantity)
+    # IO.inspect(new_placed_by)
+    # IO.inspect(new_ltp)
+
+    OrderBook.store_order(params)
+    # param = [flag: flag]
+    # socket = assign(socket,param)
+    {:noreply, socket}
+  end
 
   # def handle_event("buy",  _, socket) do
   #   IO.inspect("buy called")
@@ -143,5 +149,4 @@ defmodule RmsdemoWeb.ExecuteOrderLive do
   #   # socket = assign(socket,param)
   #   {:noreply, socket}
   # end
-
 end

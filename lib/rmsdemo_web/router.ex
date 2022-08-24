@@ -21,7 +21,6 @@ defmodule RmsdemoWeb.Router do
 
     live "/executeorder", ExecuteOrderLive
 
-
     get "/order", OrderBookController, :index
     post "/order", OrderBookController, :selected_stock
   end
